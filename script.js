@@ -15,82 +15,90 @@ generateBtn.addEventListener("click", writePassword);
 
 // Make prompt to appear to confirm variables
 
-generateBtn.onclick = generatePassword();
-
 function generatePassword() {
 
-var getCount = [
-   getLength = prompt("What will be the length of your password? (Must containe a length between 8-126 characters)"),
-   getSpecial = confirm("Include special characters?"),
-   getLower = confirm("Include lower case letters?"),
-   getUpper = confirm("include upper case letters?"),
-   getNumber = confirm("include numbers?")
-];
+  const getLength = prompt("What will be the length of your password? (Must containe a length between 8-126 characters)");
 
-if(getLength < 8) {
-  return "Must be at least 8 characters!"
-} else if( getLength > 126) {
-  return "The max character length is 126!"
-}
+  var getSpecial = confirm("Include special characters?");
+  var getLower = confirm("Include lower case letters?");
+  var getUpper = confirm("include upper case letters?");
+  var getNumber = confirm("include numbers?");
 
-  //Filtering only true statements from the array
 
-  var trueCount = getCount.filter(Boolean)
+  //An array for all options available
+  //An array to double check that all characters needed are used
+  //An array to hold the final results and return them to the textbox
+  var allOptions = [];
+  var neededCharacters = []
+  var final = [];
 
-  if (trueCount === 0) {
-    return "must select one charater type!"
+
+  if (getLength < 8) {
+    return "Must be at least 8 characters!"
+  } else if (getLength > 126) {
+    return "The max character length is 126!"
   }
 
+  //Filtering characters needed to be used
+
+  if (getSpecial) {
+    neededCharacters.push(randomSpecial());
+  }
+  if (getLower) {
+    neededCharacters.push(randomLower());
+  }
+  if (getUpper) {
+    neededCharacters.push(randomUpper());
+  }
+  if (getNumber) {
+    neededCharacters.push(randomNumber());
+  }
+
+
   //Generating the password based on results
-  //Need to loop randomFunc based on true statements until x = getlength
- var x = trueCount
- 
- while(x < getLength) {
-   
-  var passwordChar = randomFunc[Math.floor(Math.random() * randomFunc.getlength)]();
+  //Need to loop  based on true statements until i = getlength
+  //Need another loop to check that all requested characters are used
 
-    return passwordChar
- };
-  
+  for (var i = 0; i < getLength; i++) {
+    var randomCharacter =
+      allOptions[Math.floor(Math.random() * allOptions.length)];
+    final.push(randomCharacter)
 
+  };
+
+  for (var j = 0; j < neededCharacters.length; j++) {
+    final[j] = neededCharacters[j];
+  };
+
+ return final;
 
 
   // Create fucntions for each confirmed variable to create a random character/number
-  
-    function randomSpecial() {
-      const specials = '!@#$%^&*()<>{}[]/-+=/';
-      return specials[Math.floor(Math.random() * specials.length)];
-    };
-    
-    function randomLower() {
-      const lowers = 'abcdefghijklmnopqrstuvwxyz';
-      return lowers[Math.floor(Math.random() * lowers.length)];
-    };
-    
-    function randomUpper() {
-      const uppers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-      return uppers[Math.floor(Math.random() * uppers.length)];
-    };
-    
-    function randomNumber() {
-      const numbers = '1234567890';
-      return numbers[Math.floor(Math.random() * numbers.length)];
-    };
+  // Confirmed booleans will be combined in the allOption array
+  function randomSpecial() {
+    const specials = "!@#$%^&*()<>{}[]/-+=/";
+    allOptions = allOptions.concat(specials.split(""));
+    return specials[Math.floor(Math.random() * specials.length)];
+  }
 
-    //Which function will be called based on the booleans that return true
-    
-    const randomFunc = {
-      getspecial: randomSpecial,
-      getLower: randomLower,
-      getUpper: randomUpper,
-      getNumber: randomNumber
-    };
-
-   
-
-
-
-
-
-
+  function randomLower() {
+    const lowers = 'abcdefghijklmnopqrstuvwxyz';
+    allOptions = allOptions.concat(lowers.split(""));
+    return lowers[Math.floor(Math.random() * lowers.length)];
   };
+
+  function randomUpper() {
+    const uppers = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    allOptions = allOptions.concat(uppers.split(""));
+    return uppers[Math.floor(Math.random() * uppers.length)];
+  };
+
+  function randomNumber() {
+    const numbers = '1234567890';
+    allOptions = allOptions.concat(numbers.split(""));
+    return numbers[Math.floor(Math.random() * numbers.length)];
+  };
+
+
+
+};
