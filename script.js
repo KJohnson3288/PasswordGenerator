@@ -69,8 +69,8 @@ function generatePassword() {
   for (var j = 0; j < neededCharacters.length; j++) {
     final[j] = neededCharacters[j];
   };
-
- return final;
+    
+ return final.join("");
 
 
   // Create fucntions for each confirmed variable to create a random character/number
